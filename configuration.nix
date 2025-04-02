@@ -97,12 +97,14 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    acpi
     firefox
     git
     grim  # screenshot functionality
     mako  # notifications system developed by swaym maintainer
     python311Full
     slurp  # screenshot functionality
+    vscode
     wget
     wl-clipboard  # wl-copy and wl-paste
   ];
