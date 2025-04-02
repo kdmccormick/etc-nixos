@@ -20,6 +20,55 @@
    #   '';
    # };
 
+  home-manager.users.kyle = { pkgs, ... }: {
+    home.packages = [ pkgs.httpie ];
+    home.stateVersion = "24.11";
+
+    programs.bash.enable = true;
+    programs.bash.bashrcExtra = "set -o vi";
+    #programs.bash.shellOptions = [ "vi" ];
+    programs.git = {
+      enable = true;
+      userName = "Kyle D McCormick";
+      userEmail = "kyle@axim.org";
+    };
+
+    wayland.windowManager.sway = {
+      enable = true;
+      config = rec {
+        modifier = "Mod4";  # super / logo key
+        startup = [
+	  {command = "foot";}  # new terminal on startup
+	];
+        keybindings = {
+          "Mod4+Return" = "exec ${pkgs.foot}/bin/foot";
+          "Mod4+Space" = "exec wmenu-run";
+          "Mod4+x" = "kill";
+	  "Mod4+h" = "focus left";
+	  "Mod4+l" = "focus right";
+	  "Mod4+j" = "focus down";
+	  "Mod4+k" = "focus up";
+	  "Mod4+Shift+h" = "move left";
+	  "Mod4+Shift+l" = "move right";
+	  "Mod4+Shift+j" = "move down";
+	  "Mod4+Shift+k" = "move up";
+	  "Mod4+1" = "workspace number 1";
+	  "Mod4+2" = "workspace number 2";
+	  "Mod4+3" = "workspace number 3";
+	  "Mod4+8" = "workspace number 8";
+	  "Mod4+9" = "workspace number 9";
+	  "Mod4+0" = "workspace number 10";
+	  "Mod4+Shift+1" = "workspace number 1";
+	  "Mod4+Shift+2" = "workspace number 2";
+	  "Mod4+Shift+3" = "workspace number 3";
+	  "Mod4+Shift+8" = "workspace number 8";
+	  "Mod4+Shift+9" = "workspace number 9";
+	  "Mod4+Shift+0" = "workspace number 10";
+        };
+      };
+    };
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   # Use the systemd-boot EFI boot loader.
@@ -119,9 +168,9 @@
     wl-clipboard  # wl-copy and wl-paste
   ];
 
-  environment.loginShellInit = ''
-    [[ "$(tty)" == /dev/tty1 ]] && sway
-  '';
+#  environment.loginShellInit = ''
+#    [[ "$(tty)" == /dev/tty1 ]] && sway
+#  '';
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
