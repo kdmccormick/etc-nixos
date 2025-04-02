@@ -8,7 +8,17 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      # Home Manager
+      <home-manager/nixos>
     ];
+
+   ## FUTURE: use flakes
+   # nix = {
+   #   package = pkgs.nixFlakes;
+   #   extraOptions = ''
+   #     experimental-features = nix-command flakes
+   #   '';
+   # };
 
   nixpkgs.config.allowUnfree = true;
 
