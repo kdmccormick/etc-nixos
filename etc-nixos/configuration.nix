@@ -40,10 +40,24 @@
         startup = [
 	  {command = "foot";}  # new terminal on startup
 	];
+	colors = {
+            focused = {
+		 background = "#552277";
+	         border = "#9944ee";
+		 childBorder = "#9944ee";
+		 indicator = "#ff00ff";
+		 text = "#eeeeee";
+	    };
+	};
         keybindings = {
+          "Mod4+Delete" = "kill";
+          "Mod4+End" = "exec systemctl suspend";
+#          "Mod4+Home" = "exec lock";
+
           "Mod4+Return" = "exec ${pkgs.foot}/bin/foot";
-          "Mod4+Space" = "exec wmenu-run";
-          "Mod4+x" = "kill";
+	  "Mod4+Space" = "exec wmenu-run";
+          "Mod4+Backslash" = "exec firefox";
+
 	  "Mod4+h" = "focus left";
 	  "Mod4+l" = "focus right";
 	  "Mod4+j" = "focus down";
@@ -52,18 +66,32 @@
 	  "Mod4+Shift+l" = "move right";
 	  "Mod4+Shift+j" = "move down";
 	  "Mod4+Shift+k" = "move up";
+
+	  "Mod4+Equal" = "resize grow width 40px";
+	  "Mod4+Minus" = "resize shrink width 40px";
+	  "Mod4+Shift+Equal" = "resize grow height 40px";
+	  "Mod4+Shift+Minus" = "resize shrink height 40px";
+
+          "Mod4+i" = "splith";
+          "Mod4+o" = "splitv";
+          "Mod4+Tab" = "split toggle";
+          "Mod4+Escape" = "split none";
+
+#          "Mod4+y" = "move scratchpad";
+#          "Mod4+p" = "scratchpad show";
+
 	  "Mod4+1" = "workspace number 1";
 	  "Mod4+2" = "workspace number 2";
 	  "Mod4+3" = "workspace number 3";
 	  "Mod4+8" = "workspace number 8";
 	  "Mod4+9" = "workspace number 9";
 	  "Mod4+0" = "workspace number 10";
-	  "Mod4+Shift+1" = "workspace number 1";
-	  "Mod4+Shift+2" = "workspace number 2";
-	  "Mod4+Shift+3" = "workspace number 3";
-	  "Mod4+Shift+8" = "workspace number 8";
-	  "Mod4+Shift+9" = "workspace number 9";
-	  "Mod4+Shift+0" = "workspace number 10";
+	  "Mod4+Shift+1" = "move container to workspace number 1";
+	  "Mod4+Shift+2" = "move container to workspace number 2";
+	  "Mod4+Shift+3" = "move container to workspace number 3";
+	  "Mod4+Shift+8" = "move container to workspace number 8";
+	  "Mod4+Shift+9" = "move container to workspace number 9";
+	  "Mod4+Shift+0" = "move container to workspace number 10";
         };
       };
     };
@@ -198,6 +226,8 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  powerManagement.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
