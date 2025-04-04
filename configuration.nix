@@ -20,6 +20,8 @@
    #   '';
    # };
 
+  security.polkit.enable = true;
+
   home-manager.users.kyle = { pkgs, ... }: {
     home.packages = [ pkgs.httpie ];  # just to confirm that custom home pkgs work
     home.stateVersion = "24.11";
@@ -96,6 +98,19 @@
 	    };
 	};
 	defaultWorkspace = "3";
+	input = {
+	  "1739:52619:SYNA8006:00_06CB:CD8B_Touchpad" = {
+	     naturalScroll = true;
+	  };
+        };
+#	output = {
+#	  "*" = {
+#	    bg =
+#	  };
+#        };
+	bar = {
+	    position = "top";
+        };
         keybindings = {
           "Mod4+Delete" = "kill";
           "Mod4+End" = "exec systemctl suspend";
@@ -126,9 +141,6 @@
           "Mod4+Tab" = "split toggle";
           "Mod4+Escape" = "split none";
 
-#          "Mod4+y" = "move scratchpad";
-#          "Mod4+p" = "scratchpad show";
-
 	  "Mod4+bracketleft" = "workspace prev";
           "Mod4+bracketright" = "workspace next";
           "Mod4+Shift+bracketleft" = "move container to workspace prev";
@@ -147,6 +159,18 @@
 	  "Mod4+Shift+8" = "move container to workspace number 8";
 	  "Mod4+Shift+9" = "move container to workspace number 9";
 	  "Mod4+Shift+0" = "move container to workspace number 10";
+#    bindsym $mod+f fullscreen
+bindsym $mod+Shift+space floating toggle
+#    bindsym $mod+space focus mode_toggle
+#    bindsym $mod+a focus parent
+
+#          STILL CONFIGURING...
+#         "Mod4+y" = "move scratchpad";
+#         "Mod4+p" = "scratchpad show";
+#         bindsym $mod+s layout stacking
+#         bindsym $mod+w layout tabbed
+#         bindsym $mod+e layout toggle split
+
         };  # end keybindings
       };  # end sway config
     };  # end sway
@@ -225,10 +249,16 @@
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
+  programs.light.enable = true;  # brightness and volume keys
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kyle = {
     isNormalUser = true;
-    extraGroups = [ "docker" "wheel" ];
+    extraGroups = [
+      "docker"
+      "video"  # brightness and volume fn keys
+      "wheel"
+    ];
     packages = with pkgs; [
       tree
     ];
