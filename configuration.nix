@@ -5,20 +5,18 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # Home Manager
-      <home-manager/nixos>
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    <home-manager/nixos>
+  ];
 
-   ## FUTURE: use flakes
-   # nix = {
-   #   package = pkgs.nixFlakes;
-   #   extraOptions = ''
-   #     experimental-features = nix-command flakes
-   #   '';
-   # };
+###use flakes?
+##nix = {
+##  package = pkgs.nixFlakes;
+##  extraOptions = ''
+##    experimental-features = nix-command flakes
+##  '';
+##};
 
   security.polkit.enable = true;
 
@@ -42,47 +40,12 @@
           color = "#110022";
       };
     };
-#    programs.waybar = {
-#      enable = true;
-#      settings = {
-#        mainBar = {
-#          layer = "top";
-#          position = "top";
-#          height = 30;
-##          output = [
-##            "eDP-1"
-##            "HDMI-A-1"
-##          ];
-#          modules-left = [ "sway/workspaces" "sway/mode" "wlr/taskbar" ];
-##          modules-center = [ "sway/window" "custom/hello-from-waybar" ];
-##          modules-right = [ "mpd" "temperature" ];
-#      
-#          "sway/workspaces" = {
-#            disable-scroll = true;
-#            all-outputs = true;
-#	    persistent-workspaces = {
-#	      "1" = [];
-#	      "2" = [];
-#	      "3" = [];
-#	      "8" = [];
-#	      "9" = [];
-#	      "0" = [];
-#	    };
-#          };
-#          "custom/hello-from-waybar" = {
-#            format = "hello {}";
-#            max-length = 40;
-#            interval = "once";
-#            exec = pkgs.writeShellScript "hello-from-waybar" ''
-#              echo "from within waybar"
-#            '';
-#          };
-#        };
-#      };
-#    };
 
     wayland.windowManager.sway = {
       enable = true;
+##    bar = {
+##        position = "top";
+##    };
       config = rec {
         modifier = "Mod4";  # super / logo key
         startup = [
@@ -98,19 +61,16 @@
 	    };
 	};
 	defaultWorkspace = "3";
-	input = {
-	  "1739:52619:SYNA8006:00_06CB:CD8B_Touchpad" = {
-	     naturalScroll = true;
-	  };
-        };
-#	output = {
-#	  "*" = {
-#	    bg =
-#	  };
-#        };
-	bar = {
-	    position = "top";
-        };
+##      input = {
+##        "1739:52619:SYNA8006:00_06CB:CD8B_Touchpad" = {
+##           naturalScroll = true;
+##        };
+##      };
+##	output = {
+##	  "*" = {
+##	    bg =
+##	  };
+##      };
         keybindings = {
           "Mod4+Delete" = "kill";
           "Mod4+End" = "exec systemctl suspend";
@@ -159,17 +119,16 @@
 	  "Mod4+Shift+8" = "move container to workspace number 8";
 	  "Mod4+Shift+9" = "move container to workspace number 9";
 	  "Mod4+Shift+0" = "move container to workspace number 10";
-#    bindsym $mod+f fullscreen
-bindsym $mod+Shift+space floating toggle
-#    bindsym $mod+space focus mode_toggle
-#    bindsym $mod+a focus parent
 
-#          STILL CONFIGURING...
-#         "Mod4+y" = "move scratchpad";
-#         "Mod4+p" = "scratchpad show";
-#         bindsym $mod+s layout stacking
-#         bindsym $mod+w layout tabbed
-#         bindsym $mod+e layout toggle split
+##        bindsym $mod+f fullscreen
+##        bindsym $mod+Shift+space floating toggle
+##        bindsym $mod+space focus mode_toggle
+##        bindsym $mod+a focus parent
+##        "Mod4+y" = "move scratchpad";
+##        "Mod4+p" = "scratchpad show";
+##        bindsym $mod+s layout stacking
+##        bindsym $mod+w layout tabbed
+##        bindsym $mod+e layout toggle split
 
         };  # end keybindings
       };  # end sway config
@@ -182,12 +141,13 @@ bindsym $mod+Shift+space floating toggle
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # boot.loader.grub = {
-  #   enable = true;
-  #   efiSupport = true;
-  #   enableCryptodisk = true;
-  #   device = "nodev";
-  # };
+##boot.loader.grub = {
+##  enable = true;
+##  efiSupport = true;
+##  enableCryptodisk = true;
+##  device = "nodev";
+##};
+
   boot.initrd.luks.devices = {
     crypted = {
       device = "/dev/disk/by-uuid/24eb7f28-a715-47e4-ac53-b9e7605532e8";
@@ -196,7 +156,7 @@ bindsym $mod+Shift+space floating toggle
   };
   boot.kernelParams = [ "processor.max_cstate=4" "amd_iomu=soft" "idle=nomwait" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
-#  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+##boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
   networking.hostName = "thelonius"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -206,45 +166,24 @@ bindsym $mod+Shift+space floating toggle
   # Set your time zone.
   time.timeZone = "America/New_York";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
+  i18n.defaultLocale = "en_US.UTF-8";
+##console = {
+##  font = "Lat2-Terminus16";
+##  keyMap = "us";
+##  useXkbConfig = true; # use xkb.options in tty.
+##};
 
-#  # Enable the X11 windowing system.
-#  services.xserver.enable = true;
-#  services.xserver.windowManager.xmonad = {
-#    enable = true;
-#    enableContribAndExtras = true;
-#    extraPackages = haskellPackages: [
-#      haskellPackages.dbus
-#      haskellPackages.List
-#      haskellPackages.monad-logger
-#    ];
-#  };
-#  services.xserver.displayManager.startx.enable = true;
-#  
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+##Enable CUPS to print documents.
+##services.printing.enable = true;
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # hardware.pulseaudio.enable = true;
-  # OR
-  # services.pipewire = {
-  #   enable = true;
-  #   pulse.enable = true;
-  # };
+##Enable sound.
+##hardware.pulseaudio.enable = true;
+##OR
+##services.pipewire = {
+##  enable = true;
+##  pulse.enable = true;
+##};
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
@@ -289,13 +228,13 @@ bindsym $mod+Shift+space floating toggle
     [[ "$(tty)" == /dev/tty1 ]] && sway
   '';
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+## Some programs need SUID wrappers, can be configured further or are
+## started in user sessions.
+## programs.mtr.enable = true;
+## programs.gnupg.agent = {
+##   enable = true;
+##   enableSSHSupport = true;
+## };
 
   programs.neovim = {
     enable = true;
@@ -313,21 +252,22 @@ bindsym $mod+Shift+space floating toggle
 
   powerManagement.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+### Open ports in the firewall.
+##networking.firewall.allowedTCPPorts = [ ... ];
+##networking.firewall.allowedUDPPorts = [ ... ];
+
+### Or disable the firewall altogether.
+##networking.firewall.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
   system.copySystemConfiguration = true;
 
-#  # Enable the gnome-keyring secrets vault
-#  # Will be exposed through DBus to programs willing to store secrets
-#  system.gnome.gnome-keyring.enable = true;
-#
+### Enable the gnome-keyring secrets vault
+### Will be exposed through DBus to programs willing to store secrets
+##system.gnome.gnome-keyring.enable = true;
+
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
   #
