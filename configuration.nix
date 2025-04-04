@@ -23,7 +23,9 @@
   ##  '';
   ##};
 
+  # make sway work with home-manager
   security.polkit.enable = true;
+  hardware.graphics.enable = true;
 
   home-manager.users.kyle =
     { pkgs, ... }:
@@ -63,7 +65,7 @@
               background = "#552277";
               border = "#9944ee";
               childBorder = "#9944ee";
-              indicator = "#ff00ff";
+              indicator = "#ffff00";
               text = "#eeeeee";
             };
           };
@@ -222,6 +224,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     acpi
+    dejavu_fonts
     firefox
     git
     grim # screenshot functionality
