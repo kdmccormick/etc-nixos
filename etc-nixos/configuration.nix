@@ -21,17 +21,63 @@
    # };
 
   home-manager.users.kyle = { pkgs, ... }: {
-    home.packages = [ pkgs.httpie ];
+    home.packages = [ pkgs.httpie ];  # just to confirm that custom home pkgs work
     home.stateVersion = "24.11";
+
+    programs.home-manager.enable = true;
 
     programs.bash.enable = true;
     programs.bash.bashrcExtra = "set -o vi";
-    #programs.bash.shellOptions = [ "vi" ];
+
     programs.git = {
       enable = true;
       userName = "Kyle D McCormick";
       userEmail = "kyle@axim.org";
     };
+    programs.swaylock = {
+      enable = true;
+      settings = {
+          color = "#110022";
+      };
+    };
+#    programs.waybar = {
+#      enable = true;
+#      settings = {
+#        mainBar = {
+#          layer = "top";
+#          position = "top";
+#          height = 30;
+##          output = [
+##            "eDP-1"
+##            "HDMI-A-1"
+##          ];
+#          modules-left = [ "sway/workspaces" "sway/mode" "wlr/taskbar" ];
+##          modules-center = [ "sway/window" "custom/hello-from-waybar" ];
+##          modules-right = [ "mpd" "temperature" ];
+#      
+#          "sway/workspaces" = {
+#            disable-scroll = true;
+#            all-outputs = true;
+#	    persistent-workspaces = {
+#	      "1" = [];
+#	      "2" = [];
+#	      "3" = [];
+#	      "8" = [];
+#	      "9" = [];
+#	      "0" = [];
+#	    };
+#          };
+#          "custom/hello-from-waybar" = {
+#            format = "hello {}";
+#            max-length = 40;
+#            interval = "once";
+#            exec = pkgs.writeShellScript "hello-from-waybar" ''
+#              echo "from within waybar"
+#            '';
+#          };
+#        };
+#      };
+#    };
 
     wayland.windowManager.sway = {
       enable = true;
@@ -49,10 +95,11 @@
 		 text = "#eeeeee";
 	    };
 	};
+	defaultWorkspace = "3";
         keybindings = {
           "Mod4+Delete" = "kill";
           "Mod4+End" = "exec systemctl suspend";
-#          "Mod4+Home" = "exec lock";
+          "Mod4+Home" = "exec swaylock";
 
           "Mod4+Return" = "exec ${pkgs.foot}/bin/foot";
 	  "Mod4+Space" = "exec wmenu-run";
@@ -72,14 +119,20 @@
 	  "Mod4+Shift+Equal" = "resize grow height 40px";
 	  "Mod4+Shift+Minus" = "resize shrink height 40px";
 
-          "Mod4+i" = "splith";
-          "Mod4+o" = "splitv";
+          "Mod4+Mod1+l" = "splith";
+          "Mod4+Mod1+j" = "splitv";
           "Mod4+Tab" = "split toggle";
           "Mod4+Escape" = "split none";
 
 #          "Mod4+y" = "move scratchpad";
 #          "Mod4+p" = "scratchpad show";
 
+	  "Mod4+bracketleft" = "workspace prev";
+          "Mod4+bracketright" = "workspace next";
+          "Mod4+Shift+bracketleft" = "move container to workspace prev";
+          "Mod4+Shift+bracketright" = "move container to workspace next";
+          "Mod4+Mod1+bracketleft" = "move container to workspace prev, workspace prev";
+          "Mod4+Mod1+bracketright" = "move container to workspace next, workspace next";
 	  "Mod4+1" = "workspace number 1";
 	  "Mod4+2" = "workspace number 2";
 	  "Mod4+3" = "workspace number 3";
@@ -92,10 +145,10 @@
 	  "Mod4+Shift+8" = "move container to workspace number 8";
 	  "Mod4+Shift+9" = "move container to workspace number 9";
 	  "Mod4+Shift+0" = "move container to workspace number 10";
-        };
-      };
-    };
-  };
+        };  # end keybindings
+      };  # end sway config
+    };  # end sway
+  };  # end home-manager
 
   nixpkgs.config.allowUnfree = true;
 
