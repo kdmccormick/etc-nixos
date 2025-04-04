@@ -119,9 +119,9 @@
 	  "Mod4+Shift+Equal" = "resize grow height 40px";
 	  "Mod4+Shift+Minus" = "resize shrink height 40px";
 
-          "Mod4+Mod1+o" = "splitv";  # add below ("open line")
+          "Mod4+o" = "splitv";  # add below ("open line")
           "Mod4+Mod1+j" = "splitv";  # add below ("alt+down")
-          "Mod4+Mod1+a" = "splith";  # add right ("append")
+          "Mod4+a" = "splith";  # add right ("append")
           "Mod4+Mod1+l" = "splith";  # add right ("alt+right")
           "Mod4+Tab" = "split toggle";
           "Mod4+Escape" = "split none";
