@@ -119,8 +119,10 @@
 	  "Mod4+Shift+Equal" = "resize grow height 40px";
 	  "Mod4+Shift+Minus" = "resize shrink height 40px";
 
-          "Mod4+Mod1+l" = "splith";
-          "Mod4+Mod1+j" = "splitv";
+          "Mod4+Mod1+o" = "splitv";  # add below ("open line")
+          "Mod4+Mod1+j" = "splitv";  # add below ("alt+down")
+          "Mod4+Mod1+a" = "splith";  # add right ("append")
+          "Mod4+Mod1+l" = "splith";  # add right ("alt+right")
           "Mod4+Tab" = "split toggle";
           "Mod4+Escape" = "split none";
 
@@ -226,11 +228,13 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kyle = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "docker" "wheel" ];
     packages = with pkgs; [
       tree
     ];
   };
+
+  virtualisation.docker.enable = true;
 
   programs.firefox.enable = true;
 
@@ -242,6 +246,7 @@
     git
     grim  # screenshot functionality
     mako  # notifications system developed by swaym maintainer
+    pass  # git-based password manager
     python311Full
     slurp  # screenshot functionality
     vscode
@@ -249,9 +254,10 @@
     wl-clipboard  # wl-copy and wl-paste
   ];
 
-#  environment.loginShellInit = ''
-#    [[ "$(tty)" == /dev/tty1 ]] && sway
-#  '';
+  # Run sway on startup
+  environment.loginShellInit = ''
+    [[ "$(tty)" == /dev/tty1 ]] && sway
+  '';
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -260,11 +266,6 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
 
   programs.neovim = {
     enable = true;
