@@ -33,7 +33,16 @@
       home.packages = [ pkgs.httpie ]; # just to confirm that custom home pkgs work
       home.stateVersion = "24.11";
 
+      home.file."kdmc.pub".source = ./kdmc.pub;
+
       programs.home-manager.enable = true;
+
+      programs.gpg = {
+        enable = true;
+	publicKeys = [
+	  {source = ./kdmc.pub;}
+	];
+      };
 
       programs.bash.enable = true;
       programs.bash.bashrcExtra = "set -o vi";
@@ -69,7 +78,7 @@
               text = "#eeeeee";
             };
           };
-          defaultWorkspace = "3";
+          defaultWorkspace = "workspace number 1";
           ##      input = {
           ##        "1739:52619:SYNA8006:00_06CB:CD8B_Touchpad" = {
           ##           naturalScroll = true;
@@ -203,6 +212,12 @@
 
   programs.light.enable = true; # brightness and volume keys
 
+  programs.foot = {
+    enable = true;
+    theme = "solarized";
+    settings.main.font = "monospace:size=11";
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kyle = {
     isNormalUser = true;
@@ -218,19 +233,16 @@
 
   virtualisation.docker.enable = true;
 
-  programs.firefox.enable = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     acpi
-    dejavu_fonts
-    firefox
     git
     grim # screenshot functionality
     nixfmt-rfc-style
     mako # notifications system developed by swaym maintainer
     pass # git-based password manager
+    pinentry-curses
     python311Full
     slurp # screenshot functionality
     vscode
@@ -245,17 +257,25 @@
 
   ## Some programs need SUID wrappers, can be configured further or are
   ## started in user sessions.
-  ## programs.mtr.enable = true;
-  ## programs.gnupg.agent = {
-  ##   enable = true;
-  ##   enableSSHSupport = true;
-  ## };
+  programs.mtr.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
+  fonts.enableDefaultPackages = true;
 
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+  };
+  programs.firefox = {
+    enable = true;
+  };
+  programs.chromium = {
+    enable = true;
   };
 
   # List services that you want to enable:
