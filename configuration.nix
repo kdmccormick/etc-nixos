@@ -27,131 +27,135 @@
   security.polkit.enable = true;
   hardware.graphics.enable = true;
 
-  home-manager.users.kyle =
-    { pkgs, ... }:
-    {
-      home.packages = [ pkgs.httpie ]; # just to confirm that custom home pkgs work
-      home.stateVersion = "24.11";
+  home-manager.users =
+    let
+      makeUser =
+        email:
+        { pkgs, ... }:
+        {
+          home.stateVersion = "24.11";
+          programs.home-manager.enable = true;
 
-      home.file."kdmc.pub".source = ./kdmc.pub;
+          programs.gpg = {
+            enable = true;
+            publicKeys = [
+              { source = ./kdmc.pub; }
+            ];
+          };
 
-      programs.home-manager.enable = true;
+          programs.bash.enable = true;
+          programs.bash.bashrcExtra = "set -o vi";
 
-      programs.gpg = {
-        enable = true;
-	publicKeys = [
-	  {source = ./kdmc.pub;}
-	];
-      };
-
-      programs.bash.enable = true;
-      programs.bash.bashrcExtra = "set -o vi";
-
-      programs.git = {
-        enable = true;
-        userName = "Kyle D McCormick";
-        userEmail = "kyle@axim.org";
-      };
-      programs.swaylock = {
-        enable = true;
-        settings = {
-          color = "#110022";
-        };
-      };
-
-      wayland.windowManager.sway = {
-        enable = true;
-        ##    bar = {
-        ##        position = "top";
-        ##    };
-        config = rec {
-          modifier = "Mod4"; # super / logo key
-          startup = [
-            { command = "foot"; } # new terminal on startup
-          ];
-          colors = {
-            focused = {
-              background = "#552277";
-              border = "#9944ee";
-              childBorder = "#9944ee";
-              indicator = "#ffff00";
-              text = "#eeeeee";
+          programs.git = {
+            enable = true;
+            userName = "Kyle D McCormick";
+            userEmail = email;
+          };
+          programs.swaylock = {
+            enable = true;
+            settings = {
+              color = "#110022";
             };
           };
-          defaultWorkspace = "workspace number 1";
-          ##      input = {
-          ##        "1739:52619:SYNA8006:00_06CB:CD8B_Touchpad" = {
-          ##           naturalScroll = true;
-          ##        };
-          ##      };
-          ##	output = {
-          ##	  "*" = {
-          ##	    bg =
-          ##	  };
-          ##      };
-          keybindings = {
-            "Mod4+Delete" = "kill";
-            "Mod4+End" = "exec systemctl suspend";
-            "Mod4+Home" = "exec swaylock";
 
-            "Mod4+Return" = "exec ${pkgs.foot}/bin/foot";
-            "Mod4+Space" = "exec wmenu-run";
-            "Mod4+Backslash" = "exec firefox";
+          wayland.windowManager.sway = {
+            enable = true;
+            ##    bar = {
+            ##        position = "top";
+            ##    };
+            config = rec {
+              modifier = "Mod4"; # super / logo key
+              startup = [
+                { command = "foot"; } # new terminal on startup
+              ];
+              colors = {
+                focused = {
+                  background = "#552277";
+                  border = "#9944ee";
+                  childBorder = "#9944ee";
+                  indicator = "#ffff00";
+                  text = "#eeeeee";
+                };
+              };
+              defaultWorkspace = "workspace number 1";
+              ##      input = {
+              ##        "1739:52619:SYNA8006:00_06CB:CD8B_Touchpad" = {
+              ##           naturalScroll = true;
+              ##        };
+              ##      };
+              ##	output = {
+              ##	  "*" = {
+              ##	    bg =
+              ##	  };
+              ##      };
+              keybindings = {
+                "Mod4+Delete" = "kill";
+                "Mod4+End" = "exec systemctl suspend";
+                "Mod4+Home" = "exec swaylock";
 
-            "Mod4+h" = "focus left";
-            "Mod4+l" = "focus right";
-            "Mod4+j" = "focus down";
-            "Mod4+k" = "focus up";
-            "Mod4+Shift+h" = "move left";
-            "Mod4+Shift+l" = "move right";
-            "Mod4+Shift+j" = "move down";
-            "Mod4+Shift+k" = "move up";
+                "Mod4+Return" = "exec ${pkgs.foot}/bin/foot";
+                "Mod4+Space" = "exec wmenu-run";
+                "Mod4+Backslash" = "exec firefox";
 
-            "Mod4+Equal" = "resize grow width 40px";
-            "Mod4+Minus" = "resize shrink width 40px";
-            "Mod4+Shift+Equal" = "resize grow height 40px";
-            "Mod4+Shift+Minus" = "resize shrink height 40px";
+                "Mod4+h" = "focus left";
+                "Mod4+l" = "focus right";
+                "Mod4+j" = "focus down";
+                "Mod4+k" = "focus up";
+                "Mod4+Shift+h" = "move left";
+                "Mod4+Shift+l" = "move right";
+                "Mod4+Shift+j" = "move down";
+                "Mod4+Shift+k" = "move up";
 
-            "Mod4+o" = "splitv"; # add below ("open line")
-            "Mod4+Mod1+j" = "splitv"; # add below ("alt+down")
-            "Mod4+a" = "splith"; # add right ("append")
-            "Mod4+Mod1+l" = "splith"; # add right ("alt+right")
-            "Mod4+Tab" = "split toggle";
-            "Mod4+Escape" = "split none";
+                "Mod4+Equal" = "resize grow width 40px";
+                "Mod4+Minus" = "resize shrink width 40px";
+                "Mod4+Shift+Equal" = "resize grow height 40px";
+                "Mod4+Shift+Minus" = "resize shrink height 40px";
 
-            "Mod4+bracketleft" = "workspace prev";
-            "Mod4+bracketright" = "workspace next";
-            "Mod4+Shift+bracketleft" = "move container to workspace prev";
-            "Mod4+Shift+bracketright" = "move container to workspace next";
-            "Mod4+Mod1+bracketleft" = "move container to workspace prev, workspace prev";
-            "Mod4+Mod1+bracketright" = "move container to workspace next, workspace next";
-            "Mod4+1" = "workspace number 1";
-            "Mod4+2" = "workspace number 2";
-            "Mod4+3" = "workspace number 3";
-            "Mod4+8" = "workspace number 8";
-            "Mod4+9" = "workspace number 9";
-            "Mod4+0" = "workspace number 10";
-            "Mod4+Shift+1" = "move container to workspace number 1";
-            "Mod4+Shift+2" = "move container to workspace number 2";
-            "Mod4+Shift+3" = "move container to workspace number 3";
-            "Mod4+Shift+8" = "move container to workspace number 8";
-            "Mod4+Shift+9" = "move container to workspace number 9";
-            "Mod4+Shift+0" = "move container to workspace number 10";
+                "Mod4+o" = "splitv"; # add below ("open line")
+                "Mod4+Mod1+j" = "splitv"; # add below ("alt+down")
+                "Mod4+a" = "splith"; # add right ("append")
+                "Mod4+Mod1+l" = "splith"; # add right ("alt+right")
+                "Mod4+Tab" = "split toggle";
+                "Mod4+Escape" = "split none";
 
-            ##        bindsym $mod+f fullscreen
-            ##        bindsym $mod+Shift+space floating toggle
-            ##        bindsym $mod+space focus mode_toggle
-            ##        bindsym $mod+a focus parent
-            ##        "Mod4+y" = "move scratchpad";
-            ##        "Mod4+p" = "scratchpad show";
-            ##        bindsym $mod+s layout stacking
-            ##        bindsym $mod+w layout tabbed
-            ##        bindsym $mod+e layout toggle split
+                "Mod4+bracketleft" = "workspace prev";
+                "Mod4+bracketright" = "workspace next";
+                "Mod4+Shift+bracketleft" = "move container to workspace prev";
+                "Mod4+Shift+bracketright" = "move container to workspace next";
+                "Mod4+Mod1+bracketleft" = "move container to workspace prev, workspace prev";
+                "Mod4+Mod1+bracketright" = "move container to workspace next, workspace next";
+                "Mod4+1" = "workspace number 1";
+                "Mod4+2" = "workspace number 2";
+                "Mod4+3" = "workspace number 3";
+                "Mod4+8" = "workspace number 8";
+                "Mod4+9" = "workspace number 9";
+                "Mod4+0" = "workspace number 10";
+                "Mod4+Shift+1" = "move container to workspace number 1";
+                "Mod4+Shift+2" = "move container to workspace number 2";
+                "Mod4+Shift+3" = "move container to workspace number 3";
+                "Mod4+Shift+8" = "move container to workspace number 8";
+                "Mod4+Shift+9" = "move container to workspace number 9";
+                "Mod4+Shift+0" = "move container to workspace number 10";
 
-          }; # end keybindings
-        }; # end sway config
-      }; # end sway
-    }; # end home-manager
+                ##        bindsym $mod+f fullscreen
+                ##        bindsym $mod+Shift+space floating toggle
+                ##        bindsym $mod+space focus mode_toggle
+                ##        bindsym $mod+a focus parent
+                ##        "Mod4+y" = "move scratchpad";
+                ##        "Mod4+p" = "scratchpad show";
+                ##        bindsym $mod+s layout stacking
+                ##        bindsym $mod+w layout tabbed
+                ##        bindsym $mod+e layout toggle split
+
+              }; # end keybindings
+            }; # end sway config
+          }; # end sway
+        };
+    in
+    {
+      kyle = makeUser ("kyle@kylemccormick.me");
+      kyle-axim = makeUser ("kyle@axim.org");
+    };
 
   nixpkgs.config.allowUnfree = true;
 
@@ -214,11 +218,11 @@
 
   programs.foot = {
     enable = true;
-    theme = "solarized";
+    # theme = "solarized-light";  # uncomment for light mode
     settings.main.font = "monospace:size=11";
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define user accounts. Don't forget to set a password with ‘passwd’.
   users.users.kyle = {
     isNormalUser = true;
     extraGroups = [
@@ -226,8 +230,13 @@
       "video" # brightness and volume fn keys
       "wheel"
     ];
-    packages = with pkgs; [
-      tree
+  };
+  users.users.kyle-axim = {
+    isNormalUser = true;
+    extraGroups = [
+      "docker"
+      "video" # brightness and volume fn keys
+      "wheel"
     ];
   };
 
@@ -245,6 +254,7 @@
     pinentry-curses
     python311Full
     slurp # screenshot functionality
+    tree
     vscode
     wget
     wl-clipboard # wl-copy and wl-paste
