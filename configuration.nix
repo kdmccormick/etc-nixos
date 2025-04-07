@@ -50,6 +50,9 @@
             enable = true;
             userName = "Kyle D McCormick";
             userEmail = email;
+##	    extraConfig = {
+##	      "safe.directory" = ["/etc/nixos"];
+##	    };
           };
           programs.swaylock = {
             enable = true;
