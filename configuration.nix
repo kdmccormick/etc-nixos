@@ -290,7 +290,8 @@
 
   # List services that you want to enable:
 
-  services.getty.autologinUser = "kyle";
+  services.getty.autologinUser = "kyle-axim";
+  services.getty.autologinOnce = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
