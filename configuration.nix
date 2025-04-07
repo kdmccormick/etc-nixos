@@ -30,7 +30,7 @@
   home-manager.users =
     let
       makeUser =
-        email:
+        { email, bashrcExtra }:
         { pkgs, ... }:
         {
           home.stateVersion = "24.11";
@@ -44,7 +44,7 @@
           };
 
           programs.bash.enable = true;
-          programs.bash.bashrcExtra = "set -o vi";
+          programs.bash.bashrcExtra = bashrcExtra;
 
           programs.git = {
             enable = true;
@@ -150,11 +150,17 @@
               }; # end keybindings
             }; # end sway config
           }; # end sway
-        };
+        }; # end makeUser
     in
     {
-      kyle = makeUser ("kyle@kylemccormick.me");
-      kyle-axim = makeUser ("kyle@axim.org");
+      kyle = makeUser ({
+        email = "kyle@kylemccormick.me";
+        bashrcExtra = "set -o vi";
+      });
+      kyle-axim = makeUser ({
+        email = "kyle@axim.org";
+        bashrcExtra = "set -o vi ; cd ~/openedx/edx-platform ; source ~/overhangio/tutor/venv/bin/activate";
+      });
     };
 
   nixpkgs.config.allowUnfree = true;
@@ -246,6 +252,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     acpi
+    dig
     git
     grim # screenshot functionality
     nixfmt-rfc-style
@@ -253,6 +260,7 @@
     pass # git-based password manager
     pinentry-curses
     python311Full
+    ripgrep
     slurp # screenshot functionality
     tree
     vscode
