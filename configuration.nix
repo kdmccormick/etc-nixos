@@ -25,6 +25,7 @@
 
   # make sway work with home-manager
   security.polkit.enable = true;
+  security.pam.services.swaylock = {};
   hardware.graphics.enable = true;
 
   home-manager.users =
